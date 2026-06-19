@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Neural Pulse | Asset Analysis</title>
+    <style>
+        :root {
+            --bg-dark: #0B0F19;
+            --bg-card: #151D30;
+            --text-main: #FFFFFF;
+            --text-muted: #8F9CAE;
+            --accent-blue: #00E5FF;
+            --accent-green: #00E676;
+            --accent-warn: #FF6D00;
+            --accent-danger: #FF1744;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; padding-bottom: 60px; }
+        .page-layout { display: flex; justify-content: center; max-width: 1600px; margin: 0 auto; padding: 0 10px; gap: 20px; }
+        .main-content { flex: 1; max-width: 1000px; min-width: 0; }
+        .sidebar-ad { width: 160px; min-width: 160px; height: 600px; position: sticky; top: 20px; background: rgba(21, 29, 48, 0.6); border: 1px dashed rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.75rem; text-align: center; border-radius: 4px; }
+        header { border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 25px 0; margin-bottom: 20px; }
+        .header-center-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .logo { font-size: 2.2rem; font-weight: 800; letter-spacing: 2px; color: var(--text-main); line-height: 1.1; margin-bottom: 5px; text-decoration: none; }
+        .logo span { color: var(--accent-blue); }
+        .sub-logo-text { font-size: 1rem; color: var(--text-muted); font-weight: 500; letter-spacing: 4px; text-transform: uppercase; }
+        .back-nav { margin-top: 15px; display: flex; gap: 15px; }
+        .back-link { color: var(--accent-blue); text-decoration: none; font-size: 0.9rem; font-weight: bold; border: 1px solid var(--accent-blue); padding: 5px 12px; border-radius: 4px; transition: all 0.3s; }
+        .back-link:hover { background: rgba(0, 229, 255, 0.1); box-shadow: 0 0 10px rgba(0, 229, 255, 0.2); }
+        
+        /* Coin Stats Dashboard */
+        .coin-header-box { background-color: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 6px; padding: 25px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .coin-identity h1 { font-size: 2rem; font-weight: 800; color: var(--text-main); }
+        .coin-identity span { font-size: 0.9rem; color: var(--text-muted); font-family: monospace; }
+        .coin-live-stats { display: flex; gap: 30px; }
+        .stat-block { text-align: right; }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .stat-value { font-family: 'Courier New', Courier, monospace; font-size: 1.8rem; font-weight: bold; color: var(--text-main); }
+        .stat-value.pulse-data { color: var(--accent-blue); }
+     
+        /* Kasten-Korrektur: Verhindert leeren Raum unter dem Chart */
+        .chart-container { 
+            width: 100% !important; 
+            height: 380px !important; 
+            background-color: var(--bg-card); 
+            border: 1px solid rgba(255, 255, 255, 0.03); 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin-bottom: 25px;
+        }
+
+        /* Zwingt das TradingView-Iframe, sich exakt an die Containerhöhe anzupassen */
+        .chart-container iframe,
+        .chart-container div {
+            height: 100% !important;
+        }
+
+        /* Signal Info Card */
+        .signal-spec-box { background: linear-gradient(135deg, #151D30 0%, #0F1524 100%); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px; padding: 25px; margin-bottom: 25px; }
+        .signal-spec-box h2 { font-size: 1.3rem; margin-bottom: 15px; border-left: 4px solid var(--accent-blue); padding-left: 10px; }
+        .spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-top: 15px; }
+        .spec-item { background: rgba(0, 0, 0, 0.2); padding: 12px; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.02); }
+        .spec-title { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+        .spec-value { font-family: monospace; font-size: 1.05rem; color: var(--text-main); margin-top: 2px; }
+
+        .ad-leaderboard { width: 100%; height: 90px; margin: 25px 0; background: rgba(21, 29, 48, 0.6); border: 1px dashed rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem; font-family: monospace; border-radius: 4px; }
+        .ad-half-banner { width: 100%; height: 45px; margin: 25px 0; background: rgba(21, 29, 48, 0.4); border: 1px dashed rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.75rem; font-family: monospace; border-radius: 4px; }
+
+        @media (max-width: 1400px) { .sidebar-ad { display: none; } }
+        @media (max-width: 768px) { .coin-header-box { flex-direction: column; align-items: flex-start; } .coin-live-stats { width: 100%; justify-content: space-between; gap: 10px; } .stat-block { text-align: left; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-center-wrapper">
+            <a href="index.html" class="logo">Crypto Neural<span>Pulse</span></a>
+            <div class="sub-logo-text">Institutional Scanner</div>
+            <div class="back-nav">
+                <a href="index.html" class="back-link" id="btn-back-en">← Back to English Hub</a>
+                <a href="index_de.html" class="back-link" id="btn-back-de">← Zum deutschen Hub</a>
+                <a href="index_ru.html" class="back-link" id="btn-back-ru">← В главный хаб (RU)</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-layout">
+        <div class="sidebar-ad">Banner Ad<br>(160x600)</div>
+
+        <div class="main-content">
+            <div class="ad-leaderboard">Top Leaderboard Ad (728x90)</div>
+
+            <div class="coin-header-box">
+                <div class="coin-identity">
+                    <h1 id="asset-display-name">--- / USDT</h1>
+                    <span id="asset-raw-ticker">Symbol: LOADING...</span>
+                </div>
+                <div class="coin-live-stats">
+                    <div class="stat-block">
+                        <div class="stat-label">Live Price</div>
+                        <div class="stat-value" id="asset-live-price">Connecting...</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-label">Current Status</div>
+                        <div class="stat-value pulse-data" id="asset-pulse-status">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container" id="tv-chart-wrapper">
+                <div id="tradingview_pulse_chart" style="width: 100%; height: 100%;"></div>
+            </div>
+
+            <div class="ad-half-banner">Ad Separator (728x45)</div>
+
+            <div class="signal-spec-box">
+                <h2>Statistical Target Metrics</h2>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Live data pulled from the core scanner node. Limits are calculated mathematically using standard deviations ($\sigma$) across a 30-minute rolling interval.</p>
+                
+                <div class="spec-grid">
+                    <div class="spec-item">
+                        <div class="spec-title">Current Z-Score</div>
+                        <div class="spec-value" id="spec-zscore" style="color: var(--accent-blue);">0.00σ</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-title">IBS Metric</div>
+                        <div class="spec-value">Calculated At Alert</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-title">Volume Multiplier</div>
+                        <div class="spec-value">Dynamic 24h Base</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-title">Target Execution</div>
+                        <div class="spec-value" style="color: var(--accent-green);">Mean Reversion</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: rgba(255, 23, 68, 0.05); border: 1px solid rgba(255, 23, 68, 0.2); padding: 20px; border-radius: 6px; margin-bottom: 30px;">
+                <h4 style="color: var(--accent-danger); margin-bottom: 5px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Execution Warning</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Ensure strict adherence to platform parameters before entering positions. Never exceed a <strong>4x–5x leverage</strong> ceiling and keep liquidation layers protected by mapping a mandatory <strong>5%–6% capital stop-loss</strong> on all automated alert spikes.</p>
+            </div>
+
+            <div class="premium-cta-box" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); border: 2px solid #00e5ff; box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); border-radius: 8px; padding: 30px; margin: 25px 0; text-align: center;">
+                <div style="display: inline-block; background: rgba(0, 229, 255, 0.1); color: #00e5ff; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;">
+                    🤖 Automated Real-Time Anomalies
+                </div>
+                <h2 style="color: #ffffff; font-size: 1.6rem; margin-bottom: 10px; font-family: sans-serif;">Unlock Premium Neural Signals</h2>
+                <p style="color: #94a3b8; font-size: 0.95rem; max-width: 600px; margin: 0 auto 25px auto; line-height: 1.5;">
+                    Don't miss the next strict market anomaly. Our Master-Scanner tracks institutional data and pushes maximum-probability entries directly to your device the millisecond they appear.
+                </p>
+                
+                <div style="display: flex; justify-content: center; gap: 40px; margin-bottom: 25px; flex-wrap: wrap;">
+                    <div style="text-align: left;"><span style="color: #00e5ff; font-weight: bold;">✓</span> <span style="color: #cbd5e1; font-size: 0.9rem;">Instant Push Notifications</span></div>
+                    <div style="text-align: left;"><span style="color: #00e5ff; font-weight: bold;">✓</span> <span style="color: #cbd5e1; font-size: 0.9rem;">Strict Volatility Filters</span></div>
+                    <div style="text-align: left;"><span style="color: #00e5ff; font-weight: bold;">✓</span> <span style="color: #cbd5e1; font-size: 0.9rem;">Full Automation</span></div>
+                </div>
+
+                <a href="https://t.me/CNP_Access_bot" target="_blank" style="display: inline-block; background: #00e5ff; color: #0f172a; font-weight: bold; text-decoration: none; padding: 14px 35px; border-radius: 4px; font-size: 1.05rem; box-shadow: 0 4px 14px rgba(0, 229, 255, 0.3); transition: all 0.2s;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 6px 20px rgba(0, 229, 255, 0.4)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 14px rgba(0, 229, 255, 0.3)'">
+                    Start 1-Month Premium Access (90 USDT)
+                </a>
+            </div>
+
+            <div class="ad-leaderboard">Bottom Leaderboard Ad (970x90)</div>
+        </div>
+
+        <div class="sidebar-ad">Bottom Right Ad Banner<br>(160x600)</div>
+    </div>
+
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+
+    <script>
+        // 1. URL-Parameter extrahieren
+        const urlParams = new URLSearchParams(window.location.search);
+        const symbol = urlParams.get('symbol') || 'BTCUSDT';
+        
+        // UI-Elemente initialisieren
+        const formattedName = symbol.replace('USDT', ' / USDT');
+        document.getElementById('asset-display-name').innerText = formattedName;
+        document.getElementById('asset-raw-ticker').innerText = `Symbol: BYBIT:${symbol}.P (Linear Perpetual)`;
+
+        // 2. Dynamischen TradingView Chart laden
+        if (typeof TradingView !== 'undefined') {
+            new TradingView.widget({
+                "width": "100%",
+                "height": "100%",
+                "symbol": `BYBIT:${symbol}.P`,
+                "interval": "30",
+                "timezone": "Etc/UTC",
+                "theme": "dark",
+                "style": "1",
+                "locale": "en",
+                "toolbar_bg": "#151D30",
+                "enable_publishing": false,
+                "hide_side_toolbar": false,
+                "allow_symbol_change": false,
+                "container_id": "tradingview_pulse_chart",
+                "studies": [
+                    "BollingerBands@tv-basicstudies"
+                ]
+            });
+        }
+
+        // 3. Live-Preisticker via Bybit WebSocket v5
+        const ws = new WebSocket("wss://stream.bybit.com/v5/public/linear");
+        
+        ws.onopen = () => {
+            ws.send(JSON.stringify({
+                op: "subscribe",
+                args: [`tickers.${symbol}`]
+            }));
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.topic === `tickers.${symbol}`) {
+                const tickerData = data.data;
+                const currentPrice = parseFloat(tickerData.lastPrice);
+                if (currentPrice) {
+                    const priceElement = document.getElementById('asset-live-price');
+                    priceElement.innerText = currentPrice > 100 
+                        ? currentPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                        : '$' + currentPrice.toFixed(4);
+                }
+            }
+        };
+
+        // 4. Backend Scanner API Daten abfragen
+        async function fetchSpecificBotData() {
+            try {
+                const response = await fetch("http://127.0.0.1:8000/api/scanner");
+                const botData = await response.json();
+                
+                if (botData && botData[symbol]) {
+                    const zScore = botData[symbol].z_score;
+                    const status = botData[symbol].status;
+                    
+                    const statusElement = document.getElementById('asset-pulse-status');
+                    const specZscore = document.getElementById('spec-zscore');
+                    
+                    statusElement.innerText = status;
+                    specZscore.innerText = `${zScore}σ`;
+
+                    // Visuelle Warnfarbe basierend auf Signalstärke anpassen
+                    if (status.includes("5/5")) { statusElement.style.color = "var(--accent-danger)"; }
+                    else if (status.includes("4/5")) { statusElement.style.color = "var(--accent-warn)"; }
+                    else if (status.includes("3/5")) { statusElement.style.color = "var(--accent-green)"; }
+                    else { statusElement.style.color = "var(--accent-blue)"; }
+                }
+            } catch (e) {
+                console.error("Backend offline or sleeping...", e);
+            }
+        }
+        
+        // Intervalle für Backend-Abfragen setzen
+        setInterval(fetchSpecificBotData, 2000);
+        fetchSpecificBotData();
+    </script>
+</body>
+</html>
