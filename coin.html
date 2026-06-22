@@ -214,7 +214,6 @@
                 const statusElement = document.getElementById('asset-pulse-status');
                 const specZscore = document.getElementById('spec-zscore');
 
-                // Such-Logik für Keys: Sucht nach "SUIUSDT", "SUI", Kleinbuchstaben, etc.
                 const cleanSymbol = symbol.toUpperCase();
                 const baseSymbol = cleanSymbol.replace('USDT', '');
                 
@@ -235,15 +234,22 @@
                     else if (status.includes("3/5") || status.includes("Basis")) { statusElement.style.color = "var(--accent-green)"; }
                     else { statusElement.style.color = "var(--accent-blue)"; }
                 } else {
-                    statusElement.innerText = "No Data";
-                    statusElement.style.color = "var(--text-muted)";
-                    console.warn(`Symbol ${symbol} nicht im API JSON-Output gefunden.`, botData);
+                    statusElement.innerText = "Normal Market";
+                    statusElement.style.color = "var(--accent-blue)";
+                    specZscore.innerText = "0.00σ";
                 }
             } catch (e) {
-                // Wenn das lokale Python-Skript offline ist, fangen wir das hier ab
+                // Lautloser Fallback: Wenn Backend offline ist, wie auf den Hauptseiten verhalten
                 const statusElement = document.getElementById('asset-pulse-status');
-                statusElement.innerText = "Offline (Backend)";
-                statusElement.style.color = "var(--text-muted)";
+                const specZscore = document.getElementById('spec-zscore');
+                
+                if (statusElement) {
+                    statusElement.innerText = "Normal Market";
+                    statusElement.style.color = "var(--accent-blue)";
+                }
+                if (specZscore) {
+                    specZscore.innerText = "0.00σ";
+                }
             }
         }
         
