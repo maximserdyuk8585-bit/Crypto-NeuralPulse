@@ -1,195 +1,222 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Crypto Neural Pulse: Автоматизированный Z-Score сканер для мониторинга криптовалютных рынков и поиска торговых сигналов в реальном времени.">
-    <title>Crypto Neural Pulse | Автоматический сканер Z-Score</title>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7034803501364278" crossorigin="anonymous"></script>
-
+    <title>Crypto Neural Pulse | Automatic Z-Score Scanner</title>
     <style>
         :root {
             --bg-dark: #0B0F19;
             --bg-card: #151D30;
             --text-main: #FFFFFF;
             --text-muted: #8F9CAE;
-            --accent-blue: #00E5FF;
+            --accent-blue: #00F5FF;
             --accent-green: #00E676;
             --accent-warn: #FF6D00;
             --accent-danger: #FF1744;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; padding-bottom: 60px; }
-        
-        /* Layout */
-        .page-layout { display: flex; justify-content: center; max-width: 1600px; margin: 0 auto; padding: 0 10px; gap: 20px; }
-        .main-content { flex: 1; max-width: 1000px; min-width: 0; }
-        .sidebar-ad { width: 160px; min-width: 160px; height: 600px; position: sticky; top: 20px; background: rgba(21, 29, 48, 0.6); border: 1px dashed rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.75rem; text-align: center; border-radius: 4px; }
-        
-        /* Header */
-        header { border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 0; margin-bottom: 20px; }
-        .header-center-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .logo { font-size: 2.5rem; font-weight: 800; letter-spacing: 2px; color: var(--text-main); line-height: 1.1; margin-bottom: 5px; }
-        .logo span { color: var(--accent-blue); }
-        .sub-logo-text { font-size: 1.1rem; color: var(--text-muted); font-weight: 500; letter-spacing: 4px; text-transform: uppercase; }
-        
-        /* Nav & Lang */
-        nav { margin-top: 20px; display: flex; gap: 25px; }
-        nav a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: color 0.3s; }
-        nav a:hover { color: var(--accent-blue); }
-        .lang-switcher { display: flex; gap: 10px; margin-top: 15px; }
-        .lang-btn { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: bold; padding: 4px 8px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; transition: all 0.3s; }
-        .lang-btn:hover, .lang-btn.active { color: var(--accent-blue); border-color: var(--accent-blue); background: rgba(0, 229, 255, 0.05); }
 
-        /* Elements */
-        .hero { padding: 40px 0 20px 0; text-align: center; }
-        .hero h1 { font-size: 2.3rem; margin-bottom: 20px; }
-        .btn-primary { display: inline-block; padding: 12px 24px; border-radius: 4px; font-weight: 600; text-decoration: none; background-color: var(--accent-blue); color: var(--bg-dark); transition: all 0.3s; }
-        .btn-primary:hover { box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
-        
-        /* Ads */
-        .ad-leaderboard { width: 100%; height: 90px; margin: 25px 0; background: rgba(21, 29, 48, 0.6); border: 1px dashed rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem; font-family: monospace; border-radius: 4px; }
-        .ad-half-banner { width: 100%; height: 45px; margin: 30px 0; background: rgba(21, 29, 48, 0.4); border: 1px dashed rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.75rem; border-radius: 4px; }
-        .ad-split-squares { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
-        .ad-square { height: 180px; background: rgba(21, 29, 48, 0.5); border: 1px dashed rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem; border-radius: 4px; }
-        
-        /* Content Sections */
-        section { margin-bottom: 40px; }
-        section h2 { font-size: 1.6rem; margin-bottom: 25px; border-left: 4px solid var(--accent-blue); padding-left: 15px; }
-        .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .rule-card { background-color: var(--bg-card); padding: 20px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.03); }
-        
-        /* Affiliate Box */
-        .native-affiliate-box { background: linear-gradient(135deg, #1A263F 0%, #111827 100%); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 8px; padding: 25px; margin-bottom: 40px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-        .btn-affiliate { padding: 12px 24px; border-radius: 4px; font-weight: 600; text-decoration: none; background-color: var(--accent-green); color: #000000; }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-        /* Scale & Reviews */
-        .scale-list { background-color: var(--bg-card); padding: 25px; border-radius: 6px; }
-        .scale-item { padding: 15px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .metrics { font-family: 'Courier New', monospace; color: var(--accent-blue); font-size: 0.9rem; }
-        .review-card { background-color: var(--bg-card); padding: 20px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.03); }
-        .review-tag { display: inline-block; font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-top: 10px; font-weight: bold; }
-        
-        /* Assets */
-        .asset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .asset-card { background-color: var(--bg-card); padding: 20px; border-radius: 6px; text-decoration: none; color: inherit; border: 1px solid rgba(255, 255, 255, 0.03); }
-        
-        /* Responsive */
-        @media (max-width: 1400px) { .sidebar-ad { display: none; } }
-        @media (max-width: 768px) { .native-affiliate-box { flex-direction: column; text-align: center; } .ad-split-squares { grid-template-columns: 1fr; } }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            text-align: center;
+            transition: border 0.3s ease;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .status {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .reviews {
+            margin-top: 50px;
+        }
+
+        .review-card {
+            background: var(--bg-card);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
 
+<div class="container">
     <header>
-        <div class="container header-center-wrapper">
-            <div class="logo">Crypto Neural<span>Pulse</span></div>
-            <div class="sub-logo-text">Бесплатные торговые сигналы</div>
-            <nav>
-                <a href="#rules">Правила торговли</a>
-                <a href="#scale">Анатомия сигналов</a>
-                <a href="#assets">Лайв-хаб</a>
-                <a href="#reviews">Отзывы</a>
-            </nav>
-            <div class="lang-switcher">
-                <a href="index.html" class="lang-btn">🇬🇧 EN</a>
-                <a href="index_de.html" class="lang-btn">🇩🇪 DE</a>
-                <a href="index_ru.html" class="lang-btn active">🇷🇺 RU</a>
-            </div>
-        </div>
+        <h1>Crypto Neural Pulse</h1>
+        <nav>
+            <a href="#">Regeln</a>
+            <a href="#">Anatomie</a>
+            <a href="#">Live-Hub</a>
+            <a href="#">Reviews</a>
+        </nav>
     </header>
 
-    <div class="page-layout">
-        <aside class="sidebar-ad">Рекламный баннер<br>(160x600)</aside>
-
-        <main class="main-content">
-            <div class="ad-leaderboard">Верхний баннер Leaderboard (728x90)</div>
-
-            <section class="hero">
-                <h1>Автоматический сканер Mean-Reversion через Z-Score</h1>
-                <p>Круглосуточный мониторинг ликвидных цифровых активов на основе институциональных параметров. Выявление экстремальных статистических аномалий для мгновенных контртрендовых сделок.</p>
-                <a href="#assets" class="btn-primary">Запустить Живой Хаб</a>
-            </section>
-
-            <div class="ad-half-banner">Разделитель рекламы (728x45)</div>
-
-            <div class="native-affiliate-box">
-                <div class="affiliate-content">
-                    <h3>Максимизируйте свое преимущество на Bybit</h3>
-                    <p>Торгуйте этими высоковероятностными сигналами Z-Score прямо на бирже Bybit. Зарегистрируйтесь по нашей официальной партнерской ссылке.</p>
-                </div>
-                <a href="https://www.bybit.com/register" class="btn-affiliate" target="_blank">Зарегистрироваться на Bybit</a>
-            </div>
-
-            <section id="rules">
-                <h2>Золотые правила трейдинга</h2>
-                <div class="rules-grid">
-                    <div class="rule-card">
-                        <h3>Правило 1: Строгий Stop-Loss</h3>
-                        <p>Никогда не открывайте сделку без строгого стоп-лосса (5%–6% от позиции).</p>
-                    </div>
-                    <div class="rule-card">
-                        <h3>Правило 2: Низкое плечо</h3>
-                        <p>Ограничьте кредитное плечо максимумом 4x–5x для устойчивости.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="scale">
-                <h2>Трехуровневая шкала уверенности</h2>
-                <div class="scale-list">
-                    <div class="scale-item">
-                        <div class="scale-header"><span style="color:var(--accent-green)">⭐⭐⭐ Сила 3/5</span><span>Интервал 30м</span></div>
-                        <div class="metrics">Z-Score > 3.0σ | Объем > 1.2x</div>
-                    </div>
-                    <div class="scale-item">
-                        <div class="scale-header"><span style="color:var(--accent-warn)">⭐⭐⭐⭐ Сила 4/5</span><span>Интервал 30м</span></div>
-                        <div class="metrics">Z-Score > 3.6σ | Объем > 1.8x</div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="assets">
-                <h2>Центр мониторинга активов</h2>
-                <div class="asset-grid" id="crypto-hub">
-                    <div class="asset-card" id="coin-BTCUSDT"><div class="asset-name">BTC / USDT</div><div class="asset-price" id="price-BTCUSDT">Подключение...</div><div class="asset-stat" id="status-BTCUSDT">Загрузка...</div></div>
-                    <div class="asset-card" id="coin-ETHUSDT"><div class="asset-name">ETH / USDT</div><div class="asset-price" id="price-ETHUSDT">Подключение...</div><div class="asset-stat" id="status-ETHUSDT">Загрузка...</div></div>
-                </div>
-            </section>
-        </main>
-
-        <aside class="sidebar-ad">Рекламный баннер<br>(160x600)</aside>
+    <div class="hero">
+        <h2>Automatischer Scanner Mean-Reversion über Z-Score</h2>
+        <p>Kontinuierliche Überwachung liquider digitaler Assets auf Basis institutioneller Parameter.</p>
     </div>
 
-    <script>
-        // WebSocket & Fetch Logic
-        const symbols = ["BTCUSDT", "ETHUSDT", "SOLUSDT", "SUIUSDT", "XRPUSDT", "DOGEUSDT"];
-        const ws = new WebSocket("wss://stream.bybit.com/v5/public/linear");
+    <div class="assets-grid" id="assets-container">
+        <div class="card" id="card-BTCUSDT">
+            <h3>BTC / USDT</h3>
+            <div class="price" id="price-BTCUSDT">Loading...</div>
+            <div class="status" id="status-BTCUSDT">Status: Loading...</div>
+        </div>
+        <div class="card" id="card-ETHUSDT">
+            <h3>ETH / USDT</h3>
+            <div class="price" id="price-ETHUSDT">Loading...</div>
+            <div class="status" id="status-ETHUSDT">Status: Loading...</div>
+        </div>
+        <div class="card" id="card-SOLUSDT">
+            <h3>SOL / USDT</h3>
+            <div class="price" id="price-SOLUSDT">Loading...</div>
+            <div class="status" id="status-SOLUSDT">Status: Loading...</div>
+        </div>
+        <div class="card" id="card-SUIUSDT">
+            <h3>SUI / USDT</h3>
+            <div class="price" id="price-SUIUSDT">Loading...</div>
+            <div class="status" id="status-SUIUSDT">Status: Loading...</div>
+        </div>
+        <div class="card" id="card-XRPUSDT">
+            <h3>XRP / USDT</h3>
+            <div class="price" id="price-XRPUSDT">Loading...</div>
+            <div class="status" id="status-XRPUSDT">Status: Loading...</div>
+        </div>
+        <div class="card" id="card-DOGEUSDT">
+            <h3>DOGE / USDT</h3>
+            <div class="price" id="price-DOGEUSDT">Loading...</div>
+            <div class="status" id="status-DOGEUSDT">Status: Loading...</div>
+        </div>
+    </div>
 
-        ws.onopen = () => ws.send(JSON.stringify({ op: "subscribe", args: symbols.map(s => `tickers.${s}`) }));
-        ws.onmessage = (e) => {
-            const data = JSON.parse(e.data);
-            if (data.topic?.startsWith("tickers.")) {
-                const sym = data.data.symbol;
-                const price = parseFloat(data.data.lastPrice);
-                const el = document.getElementById(`price-${sym}`);
-                if (el) el.innerText = price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-            }
-        };
+    <div class="reviews">
+        <h2>Nutzerbewertungen</h2>
+        <div class="review-card">
+            <strong>KryptoKalle_92</strong> ★★★★★
+            <p>"Boah dachte erst ist wieder so ein scam fake bot aber der lila tier 5 alarm bei sol hat grad so gottlos reingehauen!! danke fuer die umsonst signale jungs, korrekt von euch!"</p>
+        </div>
+        <div class="review-card">
+            <strong>Dmitry_ST</strong> ★★★
+            <p>"Signals are fine, but I was stupid enough not to set a stop-loss as stated in the rules and got liquidated on SUI... Guys, read the rules about 5x leverage!! Not the bot's fault, but it hurts."</p>
+        </div>
+    </div>
+</div>
 
-        async function fetchBotData() {
+<script>
+    function calculateZScore(data) {
+        if (data.length === 0) return 0;
+        const mean = data.reduce((a, b) => a + b) / data.length;
+        const stdDev = Math.sqrt(data.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / data.length);
+        return stdDev === 0 ? 0 : (data[data.length - 1] - mean) / stdDev;
+    }
+
+    async function updateMarketData() {
+        const symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'SUIUSDT', 'XRPUSDT', 'DOGEUSDT'];
+        
+        for (const symbol of symbols) {
             try {
-                const res = await fetch("http://127.0.0.1:8000/api/scanner");
-                const data = await res.json();
-                for (const symbol in data) {
-                    const el = document.getElementById(`status-${symbol}`);
-                    if (el) el.innerHTML = `Z-Score: ${data[symbol].z_score}<br>Статус: ${data[symbol].status}`;
+                // Bybit Public API (Kein Localhost/127.0.0.1)
+                const response = await fetch(`https://api.bybit.com/v5/market/kline?category=linear&symbol=${symbol}&interval=30&limit=50`);
+                const result = await response.json();
+
+                if (result.retCode === 0) {
+                    const klines = result.result.list;
+                    const prices = klines.map(k => parseFloat(k[4])).reverse(); 
+                    const currentPrice = prices[prices.length - 1];
+                    const zScore = calculateZScore(prices);
+
+                    const priceElement = document.getElementById(`price-${symbol}`);
+                    const statusElement = document.getElementById(`status-${symbol}`);
+                    const cardElement = document.getElementById(`card-${symbol}`);
+
+                    if (priceElement) {
+                        priceElement.innerText = `$${currentPrice.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                    }
+
+                    const absZ = Math.abs(zScore);
+                    let strength = "Normal Market";
+                    let color = "rgba(255, 255, 255, 0.03)";
+
+                    if (absZ > 4.2) {
+                        strength = "5/5 - Anomaly";
+                        color = "var(--accent-danger)";
+                    } else if (absZ > 3.6) {
+                        strength = "4/5 - High";
+                        color = "var(--accent-warn)";
+                    } else if (absZ > 3.0) {
+                        strength = "3/5 - Base";
+                        color = "var(--accent-green)";
+                    }
+
+                    if (cardElement) cardElement.style.borderColor = color;
+                    if (statusElement) {
+                        statusElement.innerHTML = `Z-Score: ${zScore.toFixed(2)}<br>Status: ${strength}`;
+                    }
                 }
-            } catch(e) { console.error("Server error:", e); }
+            } catch (e) {
+                console.error(`Error fetching ${symbol}:`, e);
+            }
         }
-        setInterval(fetchBotData, 2000);
-        fetchBotData();
-    </script>
+    }
+
+    // Intervalle starten
+    setInterval(updateMarketData, 5000);
+    updateMarketData();
+</script>
+
 </body>
 </html>
