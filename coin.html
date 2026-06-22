@@ -1,13 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7034803501364278"
-     crossorigin="anonymous"></script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Neural Pulse | Asset Analysis</title>
+    <title>Crypto Neural Pulse | Asset-Analyse</title>
     <style>
         :root {
             --bg-dark: #0B0F19;
@@ -21,14 +17,17 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; padding-bottom: 60px; }
-        .page-layout { display: flex; justify-content: center; max-width: 1600px; margin: 0 auto; padding: 0 10px; gap: 20px; }
+        
+        /* Zentriertes Clean-Layout ohne störende Seitenbanner */
+        .page-layout { display: flex; justify-content: center; max-width: 1000px; margin: 0 auto; padding: 0 10px; }
         .main-content { flex: 1; max-width: 1000px; min-width: 0; }
-        .sidebar-ad { width: 160px; min-width: 160px; height: 600px; position: sticky; top: 20px; background: rgba(21, 29, 48, 0.6); border: 1px dashed rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.75rem; text-align: center; border-radius: 4px; }
+        
         header { border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 25px 0; margin-bottom: 20px; }
         .header-center-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; }
         .logo { font-size: 2.2rem; font-weight: 800; letter-spacing: 2px; color: var(--text-main); line-height: 1.1; margin-bottom: 5px; text-decoration: none; }
         .logo span { color: var(--accent-blue); }
         .sub-logo-text { font-size: 1rem; color: var(--text-muted); font-weight: 500; letter-spacing: 4px; text-transform: uppercase; }
+        
         .back-nav { margin-top: 15px; display: flex; gap: 15px; }
         .back-link { color: var(--accent-blue); text-decoration: none; font-size: 0.9rem; font-weight: bold; border: 1px solid var(--accent-blue); padding: 5px 12px; border-radius: 4px; transition: all 0.3s; }
         .back-link:hover { background: rgba(0, 229, 255, 0.1); box-shadow: 0 0 10px rgba(0, 229, 255, 0.2); }
@@ -43,18 +42,16 @@
         .stat-value { font-family: 'Courier New', Courier, monospace; font-size: 1.8rem; font-weight: bold; color: var(--text-main); }
         .stat-value.pulse-data { color: var(--accent-blue); }
      
-        /* Kasten-Korrektur: Verhindert leeren Raum unter dem Chart */
+        /* Chart-Bereich Anpassungen */
         .chart-container { 
             width: 100% !important; 
-            height: 380px !important; 
+            height: 420px !important; 
             background-color: var(--bg-card); 
             border: 1px solid rgba(255, 255, 255, 0.03); 
             border-radius: 6px; 
             overflow: hidden; 
             margin-bottom: 25px;
         }
-
-        /* Zwingt das TradingView-Iframe, sich exakt an die Containerhöhe anzupassen */
         .chart-container iframe,
         .chart-container div {
             height: 100% !important;
@@ -68,10 +65,6 @@
         .spec-title { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
         .spec-value { font-family: monospace; font-size: 1.05rem; color: var(--text-main); margin-top: 2px; }
 
-        .ad-leaderboard { width: 100%; height: 90px; margin: 25px 0; background: rgba(21, 29, 48, 0.6); border: 1px dashed rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem; font-family: monospace; border-radius: 4px; }
-        .ad-half-banner { width: 100%; height: 45px; margin: 25px 0; background: rgba(21, 29, 48, 0.4); border: 1px dashed rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.75rem; font-family: monospace; border-radius: 4px; }
-
-        @media (max-width: 1400px) { .sidebar-ad { display: none; } }
         @media (max-width: 768px) { .coin-header-box { flex-direction: column; align-items: flex-start; } .coin-live-stats { width: 100%; justify-content: space-between; gap: 10px; } .stat-block { text-align: left; } }
     </style>
 </head>
@@ -90,10 +83,7 @@
     </header>
 
     <div class="page-layout">
-        <div class="sidebar-ad">Banner Ad<br>(160x600)</div>
-
         <div class="main-content">
-            <div class="ad-leaderboard">Top Leaderboard Ad (728x90)</div>
 
             <div class="coin-header-box">
                 <div class="coin-identity">
@@ -116,11 +106,9 @@
                 <div id="tradingview_pulse_chart" style="width: 100%; height: 100%;"></div>
             </div>
 
-            <div class="ad-half-banner">Ad Separator (728x45)</div>
-
             <div class="signal-spec-box">
                 <h2>Statistical Target Metrics</h2>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">Live data pulled from the core scanner node. Limits are calculated mathematically using standard deviations ($\sigma$) across a 30-minute rolling interval.</p>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Live data pulled from the core scanner node. Limits are calculated mathematically using standard deviations ($ \sigma $) across a 30-minute rolling interval.</p>
                 
                 <div class="spec-grid">
                     <div class="spec-item">
@@ -166,15 +154,10 @@
                     Start 1-Month Premium Access (90 USDT)
                 </a>
             </div>
-
-            <div class="ad-leaderboard">Bottom Leaderboard Ad (970x90)</div>
         </div>
-
-        <div class="sidebar-ad">Bottom Right Ad Banner<br>(160x600)</div>
     </div>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-
     <script>
         // 1. URL-Parameter extrahieren
         const urlParams = new URLSearchParams(window.location.search);
@@ -231,7 +214,7 @@
             }
         };
 
-        // 4. Backend Scanner API Daten abfragen
+        // 4. Backend Scanner API Daten abfragen (Status & Z-Score)
         async function fetchSpecificBotData() {
             try {
                 const response = await fetch("http://127.0.0.1:8000/api/scanner");
