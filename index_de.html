@@ -26,19 +26,9 @@
         }
 
         /* Globale Resets & Schrifteinstellungen */
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-        }
-        body { 
-            background-color: var(--bg-dark); 
-            color: var(--text-main); 
-            line-height: 1.6; 
-            padding-bottom: 60px; 
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; padding-bottom: 60px; }
+        
         /* Layout-Struktur (Zentrierter Content-Bereich) */
         .page-layout { display: flex; justify-content: center; max-width: 1000px; margin: 0 auto; padding: 0 10px; }
         .main-content { flex: 1; max-width: 1000px; min-width: 0; }
@@ -100,14 +90,20 @@
         .asset-price { font-family: 'Courier New', Courier, monospace; font-size: 1.2rem; color: var(--text-main); margin-bottom: 5px; font-weight: 600; }
         .asset-stat { font-family: 'Courier New', Courier, monospace; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
 
-        /* Nutzerbewertungen */
-        .review-card { background-color: var(--bg-card); padding: 20px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.03); margin-bottom: 15px; }
+        /* Nutzerbewertungen Grid & Cards */
         .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .review-card { background-color: var(--bg-card); padding: 20px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.03); display: flex; flex-direction: column; justify-content: space-between; }
+        .review-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; }
+        .review-user { font-weight: bold; color: var(--text-main); }
+        .review-text { color: var(--text-muted); font-size: 0.9rem; font-style: italic; flex-grow: 1; }
+        
+        /* Bewertungs-Badges (Sterne-Klassifizierung) */
+        .review-badge { display: inline-block; align-self: flex-start; margin-top: 15px; font-size: 0.75rem; font-weight: bold; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-positive { background-color: rgba(0, 230, 118, 0.1); color: var(--accent-green); }
+        .badge-neutral { background-color: rgba(255, 109, 0, 0.1); color: var(--accent-warn); }
+        .badge-critical { background-color: rgba(255, 23, 68, 0.1); color: var(--accent-danger); }
 
-        /* Responsive Anpassungen */
-        @media (max-width: 768px) { 
-            .native-affiliate-box { flex-direction: column; text-align: center; } 
-        }
+        @media (max-width: 768px) { .native-affiliate-box { flex-direction: column; text-align: center; } }
     </style>
 </head>
 <body>
@@ -221,10 +217,32 @@
                     <div class="review-card">
                         <div class="review-header"><span class="review-user">KryptoKalle_92</span><span class="review-rating">⭐⭐⭐⭐⭐</span></div>
                         <div class="review-text">"Boah dachte erst is wieder so ein scam fake bot, aber der lila Tier 5 Alarm bei SOL hat grad so gottlos reingehauen??!! Danke für die kostenlosen Signale Jungs, korrekt von euch!"</div>
+                        <div class="review-badge badge-positive">Positive Bewertung</div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header"><span class="review-user">X_Trader_pump</span><span class="review-rating">⭐⭐⭐⭐</span></div>
+                        <div class="review-text">"ngl die Charts sehen echt clean aus, aber wo ist der History-Tab?? Signale auf Telegram sind aber verdammt schnell. Hab heute beim ETH-Bounce einiges mitgenommen, thx."</div>
+                        <div class="review-badge badge-neutral">Neutrale Bewertung</div>
                     </div>
                     <div class="review-card">
                         <div class="review-header"><span class="review-user">Dmitry_ST</span><span class="review-rating">⭐⭐⭐</span></div>
                         <div class="review-text">"Signale sind in Ordnung, aber ich war so dumm keinen Stop-Loss zu setzen... Jungs, lest die Regeln mit dem 5x Hebel!! Nicht die Schuld vom Bot, aber es tut weh."</div>
+                        <div class="review-badge badge-critical">Kritische Bewertung</div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header"><span class="review-user">Gerhard_K</span><span class="review-rating">⭐⭐⭐</span></div>
+                        <div class="review-text">"Verstehe die ganzen mathematischen Begriffe wie Z-Score nicht wirklich, aber mein Sohn hat das für mich eingerichtet. Bisher 3 Trades gemacht, alle im Plus. Manchmal etwas viel Bannerwerbung hier."</div>
+                        <div class="review-badge badge-neutral">Neutrale Bewertung</div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header"><span class="review-user">MoonBoyFrenzy</span><span class="review-rating">⭐⭐⭐⭐⭐</span></div>
+                        <div class="review-text">"YOOOO DAS DOGE SIGNAL WAR SOWAS VON KRANK BRUDER!!! Absolute Peak-Short-Gelegenheit!!! Crypto Neural Pulse to the moon fr fr 🚀🔥"</div>
+                        <div class="review-badge badge-positive">Positive Bewertung</div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header"><span class="review-user">Ivan_CryptoSol</span><span class="review-rating">⭐⭐⭐⭐⭐</span></div>
+                        <div class="review-text">"Funktioniert perfekt, der Telegram-Bot für die Bezahlung ist super praktisch. Warte noch auf den Bybit-Ref-Link, um mit Rabatt zu traden."</div>
+                        <div class="review-badge badge-positive">Positive Bewertung</div>
                     </div>
                 </div>
             </section>
@@ -238,7 +256,6 @@
     </div>
 
     <script>
-        // Array der zu scannenden Handelspaare
         const symbols = ["BTCUSDT", "ETHUSDT", "SOLUSDT", "SUIUSDT", "XRPUSDT", "DOGEUSDT"];
         
         /**
@@ -257,41 +274,36 @@
         async function updateMarketData() {
             for (const symbol of symbols) {
                 try {
-                    // API-Abfrage für die letzten 50 Candlesticks des jeweiligen Linearen Perpetual Contracts
                     const response = await fetch(`https://api.bybit.com/v5/market/kline?category=linear&symbol=${symbol}&interval=30&limit=50`);
                     const result = await response.json();
                     
                     if (result.retCode === 0) {
                         const klines = result.result.list;
-                        // Index 4 enthält den Close-Preis. Array umdrehen, damit der neueste Preis am Ende steht.
                         const prices = klines.map(k => parseFloat(k[4])).reverse();
                         const currentPrice = prices[prices.length - 1];
                         const zScore = calculateZScore(prices);
                         
-                        // DOM Elemente zuweisen
                         const priceElement = document.getElementById(`price-${symbol}`);
                         const statusElement = document.getElementById(`status-${symbol}`);
                         const cardElement = document.getElementById(`coin-${symbol}`);
 
-                        // Währungs-Formatierung für den aktuellen Preis (US-Dollar)
                         if (priceElement) priceElement.innerText = currentPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
                         
-                        // Absoluten Z-Score prüfen zur visuellen Alarmierung/Einfärbung der Cards
                         const absZ = Math.abs(zScore);
                         let strength = "";
                         
                         if (absZ > 4.2) { 
                             strength = "5/5 - Anomalie"; 
-                            cardElement.style.borderColor = "var(--accent-danger)"; // Roter Rahmen bei extremer Abweichung
+                            cardElement.style.borderColor = "var(--accent-danger)"; 
                         } else if (absZ > 3.6) { 
                             strength = "4/5 - Hoch"; 
-                            cardElement.style.borderColor = "var(--accent-warn)";   // Oranger Rahmen bei hoher Konfidenz
+                            cardElement.style.borderColor = "var(--accent-warn)"; 
                         } else if (absZ > 3.0) { 
                             strength = "3/5 - Basis"; 
-                            cardElement.style.borderColor = "var(--accent-green)";  // Grüner Rahmen bei normalem Trigger
+                            cardElement.style.borderColor = "var(--accent-green)"; 
                         } else { 
                             strength = "Normaler Markt"; 
-                            cardElement.style.borderColor = "rgba(255, 255, 255, 0.03)"; // Standard-Design
+                            cardElement.style.borderColor = "rgba(255, 255, 255, 0.03)"; 
                         }
 
                         if (statusElement) statusElement.innerText = `Status: ${strength}`;
@@ -304,8 +316,6 @@
 
         // Event-Loop Steuerung: Führt das Skript alle 5 Sekunden (5000ms) aus
         setInterval(updateMarketData, 5000);
-        
-        // Initialer Start beim ersten Laden der Website
         updateMarketData();
     </script>
 </body>
