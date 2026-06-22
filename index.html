@@ -257,12 +257,19 @@
                         const absZ = Math.abs(zScore);
                         let strength = "";
                         
-                        if (absZ > 4.2) { strength = "5/5 - Anomaly"; cardElement.style.borderColor = "var(--accent-danger)"; }
-                        else if (absZ > 3.6) { strength = "4/5 - High"; cardElement.style.borderColor = "var(--accent-warn)"; }
-                        else if (absZ > 3.0) { strength = "3/5 - Base"; cardElement.style.borderColor = "var(--accent-green)"; }
-                        else { cardElement.style.borderColor = "rgba(255, 255, 255, 0.03)"; }
-
-                        if (statusElement) statusElement.innerHTML = `Z-Score: ${zScore.toFixed(2)}<br>Status: ${strength}`;
+                       if (absZ > 4.2) { 
+                        strength = "5/5 - Anomaly"; 
+                      cardElement.style.borderColor = "var(--accent-danger)"; 
+                      } else if (absZ > 3.6) { 
+                       strength = "4/5 - High"; 
+                      cardElement.style.borderColor = "var(--accent-warn)"; 
+                      } else if (absZ > 3.0) { 
+                      strength = "3/5 - Base"; 
+                      cardElement.style.borderColor = "var(--accent-green)"; 
+                      } else { 
+                      strength = "Normal Market"; 
+                      cardElement.style.borderColor = "rgba(255, 255, 255, 0.03)"; 
+                      }
                     }
                 } catch (e) {
                     console.error(`Error fetching ${symbol}:`, e);
