@@ -242,6 +242,9 @@
                     const response = await fetch(`https://api.bybit.com/v5/market/kline?category=linear&symbol=${symbol}&interval=30&limit=50`);
                     const result = await response.json();
                     
+                    // DEBUG LOG: Hilft zu sehen ob Bybit überhaupt antwortet
+                    console.log(`API Antwort für ${symbol}:`, result);
+
                     if (result.retCode === 0) {
                         const klines = result.result.list;
                         const prices = klines.map(k => parseFloat(k[4])).reverse();
@@ -257,22 +260,28 @@
                         const absZ = Math.abs(zScore);
                         let strength = "";
                         
-                       if (absZ > 4.2) { 
-                        strength = "5/5 - Anomaly"; 
-                      cardElement.style.borderColor = "var(--accent-danger)"; 
-                      } else if (absZ > 3.6) { 
-                       strength = "4/5 - High"; 
-                      cardElement.style.borderColor = "var(--accent-warn)"; 
-                      } else if (absZ > 3.0) { 
-                      strength = "3/5 - Base"; 
-                      cardElement.style.borderColor = "var(--accent-green)"; 
-                      } else { 
-                      strength = "Normal Market"; 
-                      cardElement.style.borderColor = "rgba(255, 255, 255, 0.03)"; 
-                      }
+                        if (absZ > 4.2) { 
+                            strength = "5/5 - Anomaly"; 
+                            cardElement.style.borderColor = "var(--accent-danger)"; 
+                        } else if (absZ > 3.6) { 
+                            strength = "4/5 - High"; 
+                            cardElement.style.borderColor = "var(--accent-warn)"; 
+                        } else if (absZ > 3.0) { 
+                            strength = "3/5 - Base"; 
+                            cardElement.style.borderColor = "var(--accent-green)"; 
+                        } else { 
+                            strength = "Normal Market"; 
+                            cardElement.style.borderColor = "rgba(255, 255, 255, 0.03)"; 
+                        }
+
+                        // Hier war der Fehler: Das Update des Elements hat gefehlt!
+                        if (statusElement) statusElement.innerText = `Status: ${strength}`;
+
+                    } else {
+                        console.error(`API Fehler bei ${symbol}:`, result.retMessage);
                     }
                 } catch (e) {
-                    console.error(`Error fetching ${symbol}:`, e);
+                    console.error(`Fetch Fehler bei ${symbol}:`, e);
                 }
             }
         }
