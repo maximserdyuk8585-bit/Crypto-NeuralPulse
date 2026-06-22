@@ -18,7 +18,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; padding-bottom: 60px; }
         
-        /* Zentriertes Clean-Layout ohne störende Seitenbanner */
         .page-layout { display: flex; justify-content: center; max-width: 1000px; margin: 0 auto; padding: 0 10px; }
         .main-content { flex: 1; max-width: 1000px; min-width: 0; }
         
@@ -32,7 +31,6 @@
         .back-link { color: var(--accent-blue); text-decoration: none; font-size: 0.9rem; font-weight: bold; border: 1px solid var(--accent-blue); padding: 5px 12px; border-radius: 4px; transition: all 0.3s; }
         .back-link:hover { background: rgba(0, 229, 255, 0.1); box-shadow: 0 0 10px rgba(0, 229, 255, 0.2); }
         
-        /* Coin Stats Dashboard */
         .coin-header-box { background-color: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 6px; padding: 25px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
         .coin-identity h1 { font-size: 2rem; font-weight: 800; color: var(--text-main); }
         .coin-identity span { font-size: 0.9rem; color: var(--text-muted); font-family: monospace; }
@@ -42,7 +40,6 @@
         .stat-value { font-family: 'Courier New', Courier, monospace; font-size: 1.8rem; font-weight: bold; color: var(--text-main); }
         .stat-value.pulse-data { color: var(--accent-blue); }
      
-        /* Chart-Bereich Anpassungen */
         .chart-container { 
             width: 100% !important; 
             height: 420px !important; 
@@ -57,7 +54,6 @@
             height: 100% !important;
         }
 
-        /* Signal Info Card */
         .signal-spec-box { background: linear-gradient(135deg, #151D30 0%, #0F1524 100%); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px; padding: 25px; margin-bottom: 25px; }
         .signal-spec-box h2 { font-size: 1.3rem; margin-bottom: 15px; border-left: 4px solid var(--accent-blue); padding-left: 10px; }
         .spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-top: 15px; }
@@ -108,7 +104,7 @@
 
             <div class="signal-spec-box">
                 <h2>Statistical Target Metrics</h2>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">Live data pulled from the core scanner node. Limits are calculated mathematically using standard deviations ($ \sigma $) across a 30-minute rolling interval.</p>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Live data pulled from the core scanner node. Limits are calculated mathematically using standard deviations (σ) across a 30-minute rolling interval.</p>
                 
                 <div class="spec-grid">
                     <div class="spec-item">
@@ -159,16 +155,13 @@
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
-        // 1. URL-Parameter extrahieren
         const urlParams = new URLSearchParams(window.location.search);
         const symbol = urlParams.get('symbol') || 'BTCUSDT';
         
-        // UI-Elemente initialisieren
         const formattedName = symbol.replace('USDT', ' / USDT');
         document.getElementById('asset-display-name').innerText = formattedName;
         document.getElementById('asset-raw-ticker').innerText = `Symbol: BYBIT:${symbol}.P (Linear Perpetual)`;
 
-        // 2. Dynamischen TradingView Chart laden
         if (typeof TradingView !== 'undefined') {
             new TradingView.widget({
                 "width": "100%",
@@ -190,7 +183,6 @@
             });
         }
 
-        // 3. Live-Preisticker via Bybit WebSocket v5
         const ws = new WebSocket("wss://stream.bybit.com/v5/public/linear");
         
         ws.onopen = () => {
@@ -214,34 +206,47 @@
             }
         };
 
-        // 4. Backend Scanner API Daten abfragen (Status & Z-Score)
         async function fetchSpecificBotData() {
             try {
                 const response = await fetch("http://127.0.0.1:8000/api/scanner");
                 const botData = await response.json();
                 
-                if (botData && botData[symbol]) {
-                    const zScore = botData[symbol].z_score;
-                    const status = botData[symbol].status;
-                    
-                    const statusElement = document.getElementById('asset-pulse-status');
-                    const specZscore = document.getElementById('spec-zscore');
+                const statusElement = document.getElementById('asset-pulse-status');
+                const specZscore = document.getElementById('spec-zscore');
+
+                // Such-Logik für Keys: Sucht nach "SUIUSDT", "SUI", Kleinbuchstaben, etc.
+                const cleanSymbol = symbol.toUpperCase();
+                const baseSymbol = cleanSymbol.replace('USDT', '');
+                
+                const coinData = botData[cleanSymbol] || 
+                                 botData[baseSymbol] || 
+                                 botData[symbol] || 
+                                 botData[symbol.toLowerCase()];
+                
+                if (coinData) {
+                    const zScore = coinData.z_score !== undefined ? coinData.z_score : '0.00';
+                    const status = coinData.status || 'Normal Market';
                     
                     statusElement.innerText = status;
                     specZscore.innerText = `${zScore}σ`;
 
-                    // Visuelle Warnfarbe basierend auf Signalstärke anpassen
-                    if (status.includes("5/5")) { statusElement.style.color = "var(--accent-danger)"; }
-                    else if (status.includes("4/5")) { statusElement.style.color = "var(--accent-warn)"; }
-                    else if (status.includes("3/5")) { statusElement.style.color = "var(--accent-green)"; }
+                    if (status.includes("5/5") || status.includes("Anomaly")) { statusElement.style.color = "var(--accent-danger)"; }
+                    else if (status.includes("4/5") || status.includes("Warn")) { statusElement.style.color = "var(--accent-warn)"; }
+                    else if (status.includes("3/5") || status.includes("Basis")) { statusElement.style.color = "var(--accent-green)"; }
                     else { statusElement.style.color = "var(--accent-blue)"; }
+                } else {
+                    statusElement.innerText = "No Data";
+                    statusElement.style.color = "var(--text-muted)";
+                    console.warn(`Symbol ${symbol} nicht im API JSON-Output gefunden.`, botData);
                 }
             } catch (e) {
-                console.error("Backend offline or sleeping...", e);
+                // Wenn das lokale Python-Skript offline ist, fangen wir das hier ab
+                const statusElement = document.getElementById('asset-pulse-status');
+                statusElement.innerText = "Offline (Backend)";
+                statusElement.style.color = "var(--text-muted)";
             }
         }
         
-        // Intervalle für Backend-Abfragen setzen
         setInterval(fetchSpecificBotData, 2000);
         fetchSpecificBotData();
     </script>
